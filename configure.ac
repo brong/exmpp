@@ -300,6 +300,18 @@ fi
 dnl LibXML2 port driver.
 PKG_CHECK_MODULES([LIBXML2], [libxml-2.0],
     build_with_libxml2="yes", build_with_libxml2="no")
+AC_ARG_ENABLE([libxml2],
+	AC_HELP_STRING([--enable-libxml2],
+	    [enable libxml2 library [[default=yes]]]),
+     [case "${enableval}" in
+	yes) if test "x${build_with_libxml2}" != "xyes"; then
+		AC_MSG_ERROR([libxml2 explicitly requested with --enable-libxml2])
+	    fi
+	    ;;
+       no)  build_with_libxml2="disabled" ;;
+       *) AC_MSG_ERROR([bad value ${enableval} for --enable-libxml2]) ;;
+     esac],)
+     AM_CONDITIONAL([DEBUG], [test x$debug = xtrue])
 AM_CONDITIONAL(WITH_LIBXML2, test "x${build_with_libxml2}" = "xyes")
 if test "x${build_with_libxml2}" = "xyes"; then
 	append_to_EMKOPTS "{d, 'HAVE_LIBXML2'}"
